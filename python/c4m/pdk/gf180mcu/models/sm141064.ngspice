@@ -80,6 +80,7 @@
 *      rm1                 Subcircuit Model for 2-terminal metal 1 resistor
 *      rm2                 Subcircuit Model for 2-terminal metal 2 resistor
 *      rm3                 Subcircuit Model for 2-terminal metal 3 resistor
+*      rm4                 Subcircuit Model for 2-terminal metal 4 resistor
 *      tm6k                Subcircuit Model for 2-terminal top metal 6k resistor
 *      tm9k                Subcircuit Model for 2-terminal top metal 9k resistor
 *      tm11k               Subcircuit Model for 2-terminal top metal 11k resistor
@@ -409,6 +410,7 @@
 +rsh_rm1=0.09
 +rsh_rm2=0.09
 +rsh_rm3=0.09
++rsh_rm4=0.09
 +rsh_tm6k=60e-3
 +rsh_tm9k=40e-3
 +rsh_tm11k=40e-3
@@ -439,6 +441,7 @@
 +rsh_rm1='0.09+0.012'
 +rsh_rm2='0.09+0.012'
 +rsh_rm3='0.09+0.012'
++rsh_rm4='0.09+0.012'
 +rsh_tm6k='60e-3 + 10e-3'
 +rsh_tm9k='40e-3 + 9e-3'
 +rsh_tm11k='40e-3 + 9e-3'
@@ -469,6 +472,7 @@
 +rsh_rm1='0.09-0.012'
 +rsh_rm2='0.09-0.012'
 +rsh_rm3='0.09-0.012'
++rsh_rm4='0.09-0.012'
 +rsh_tm6k='60e-3 - 10e-3'
 +rsh_tm9k='40e-3 - 9e-3'
 +rsh_tm11k='40e-3 - 9e-3'
@@ -761,8 +765,8 @@ xr1 d d1 b nplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab'
 xr2 s s1 b nplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
 
 
-m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -4409,8 +4413,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 + mis_vth=agauss(0,var_vth,1)
 xr1 d d1 b nplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b nplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -8058,8 +8062,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b nplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b nplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 .model  nfet_03v3.0  nmos
@@ -11707,8 +11711,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b nplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b nplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -15360,8 +15364,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b nplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b nplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -19013,8 +19017,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b pplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -22714,8 +22718,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b pplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -26416,8 +26420,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b pplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -30116,8 +30120,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b pplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -33814,8 +33818,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b pplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -37519,8 +37523,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b nplus_u_m2 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b nplus_u_m2 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b nfet_06v0 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=0 sb=0 sd=0
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b nfet_06v0 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=0 sb=0 sd=0 m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -37762,7 +37766,7 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 .lib nfet_06v0_nvt_t
 .subckt nfet_06v0_nvt d g s b w=1e-5 l=1.8e-6 as=0 ad=0 ps=0 pd=0 nrd=0 nrs=0 par=1 dtemp=0 sa=0 sb=0 nf=1 sd=0 m=1
 
-m0 d g s b nfet_06v0_nvt w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs sa=sa sb=sb nf=nf sd=sd
+m0 d g s b nfet_06v0_nvt w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs sa=sa sb=sb nf=nf sd=sd m=m
 
 .ends nfet_06v0_nvt
 
@@ -37937,8 +37941,8 @@ m0 d g s b nfet_06v0_nvt w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs sa=sa s
 
 xr1 d d1 b pplus_u_m2 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m2 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_06v0 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=0 sb=0 sd=0
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_06v0 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=0 sb=0 sd=0 m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -38082,17 +38086,17 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 .model  diode_nd2ps_03v3  d  level = 3  
 +tref    = 25            
-+is      = '2.2959e-007 * jsa'   
-+jsw     = '2.1207e-013 * jsa'  
-+ik      = 300000        
-+bv      = 11.0             
++is      = '2.2959e-007 * jsa'
++jsw     = '2.1207e-013 * jsa'
++ik      = 300000
++bv      = 11
 +ibv     = 0.001         
 +n       = 1.01          
 +rs      = '2e-010 * rsa'  
 +jtun    = 1.1223e-005   
 +jtunsw  = 6.4125e-012   
 +ntun    = 10            
-+cj      = '0.00096797* cja'    
++cjo     = '0.00096797* cja'    
 +cjp     = '1.5663e-010* cjswa'   
 +pb      = 0.70172       
 +php     = 0.8062          
@@ -38121,7 +38125,7 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 +jtun    = 5.4028e-005   
 +jtunsw  = 9.8419e-011   
 +ntun    = 60            
-+cj      = '0.00094344* cja'    
++cjo     = '0.00094344* cja'    
 +cjp     = '1.5078e-010* cjswa'   
 +pb      = 0.69939       
 +php     = 0.8022        
@@ -38143,7 +38147,7 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 +is      = '6.88e-007 * jsa'      jsw     = '4.88e-013 * jsa'      ik      = 229000        
 +bv      = 11              ibv     = 0.001           ikr     = 1e-030        
 +n       = 1.0541          rs      = '2e-010 * rsa'   
-+cj      = '0.00095 * cja'        cjp     = '1.33e-010 * cjswa'      pb      = 0.606         
++cjo     = '0.00095 * cja'        cjp     = '1.33e-010 * cjswa'      pb      = 0.606         
 +php     = 0.48            mj      = 0.296           mjsw    = 0.01          
 +tlev    = 1               tlevc   = 1               trs     = 0.0001        
 +xti     = 5               cta     = 0.000825        ctp     = 0.0018        
@@ -38153,12 +38157,13 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 +tref    = 25           
 +is      = '2.0867e-007 * jsa'  jsw     = '1.6088e-013 * jsa'  ik      = 253800                   
 +ikr     = 0               n       = 1.0058          rs      = '2.0e-010 * rsa'    
-+cj      = '0.000912 * cja'  cjsw    = '1.4649e-010 * cjswa'    pb      = 0.76836         php     = 0.5           
++cjo     = '0.000912 * cja'  cjsw    = '1.4649e-010 * cjswa'    pb      = 0.76836         php     = 0.5           
 +mj      = 0.32713         mjsw    = 0.056777   
 +tlev    = 1               tlevc   = 1               trs     = 0.00168         xti     = 3             
 +cta     = 0.001           ctp     = 0.00071888      tpb     = 0.0019314       tphp    = 0.0017642     
 +eg      = 1.17            bv=10.5
 *
+
 .model  diode_nw2ps_03v3  d  level = 3
 +area    = 1.6e-009      
 +pj      = 0.00016       
@@ -38166,16 +38171,16 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 +is      = '1.5654e-006 * jsa'  
 +jsw     = '1.6912e-012 * jsa'  
 +ik      = 300000        
-+bv      = 0             
-+ibv     = 0.001         
++bv      = 11
++ibv     = 0.001                    
 +n       = 1.01          
 +rs      = '2e-010 * rsa'  
 +jtun    = 0.00037353    
 +jtunsw  = 3.0737e-011   
 +ntun    = 22            
-+cj      = '0.00014917* cja'    
++cjo      = '0.00014917* cja'    
 +cjp     = '5.8113e-010*cjswa'   
-+pb      = 0.5755        
++vj      = 0.5755        
 +php     = 0.55456       
 +mj      = 0.33979       
 +mjsw    = 0.2257        
@@ -38194,7 +38199,7 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 +tref    = 25            
 +is      = '1.6119e-006 * jsa' jsw   = '2e-012 * jsa'         ik      = 100000        
 +ikr     = 0               n       = 1              rs      = '2e-010 * rsa'          
-+cj      = '0.00014914 * cja' cjsw   = '5.8719e-010 * cjswa' pb      = 0.43905   php     = 0.48991       
++cjo     = '0.00014914 * cja' cjsw   = '5.8719e-010 * cjswa' pb      = 0.43905   php     = 0.48991       
 +mj      = 0.30525         mjsw    = 0.21757       
 +tlev    = 1               tlevc   = 1              trs     = 0               xti     = 3             
 +cta     = 0.0028626       ctp     = 0.00091707     tpb     = 0.0024779       tphp    = 0.00125       
@@ -38202,30 +38207,31 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 *
 .model  diode_pw2dw  d  level = 3
 +tref    = 25            
-+is      = '5.2139e-007* jsa'     jsw     = '0* jsa'               ik      = 711930          vb      = 14.732        
++is      = '5.2139e-007* jsa'     jsw     = '0* jsa'               ik      = 711930          bv      = 14.732        
 +ibv     = 0.001           ikr     = 0               n       = 0.98            rs      = '2e-010* rsa'   
-+cj      = '0.00032124* cja'      cjp     = '5.4659e-010* cjswa'     pb      = 0.63391         php     = 0.77752       
++cjo     = '0.00032124* cja'      cjp     = '5.4659e-010* cjswa'     pb      = 0.63391         php     = 0.77752       
 +mj      = 0.31113         mjsw    = 0.39816       
 +tlev    = 1               tlevc   = 1               trs     = 0.0002207       xti     = 3             
 +cta     = 0.0012922       ctp     = 0.0010772       tpb     = 0.0019819       tphp    = 0.0016567     
 +eg      = 1.17
 *
 .model  diode_dw2ps  d  level = 3
-+tref    = 25            
-+is      = '2e-006* jsa'     jsw     = '1e-12* jsa'               ik      = 229050          vb      = 30.48         
++tref    = 25
++is      = '2e-006* jsa'     jsw     = '1e-12* jsa'               ik      = 229050          bv      = 30.48         
 +ibv     = 0.001           ikr     = 0               n       = 0.99335         rs      = '2e-010* rsa'   
-+cj      = '0.00022998* cja'      cjp     = '7.2369e-010* cjswa'     pb      = 0.35175         php     = 0.37806       
++cjo     = '0.00022998* cja'      cjp     = '7.2369e-010* cjswa'     pb      = 0.35175         php     = 0.37806       
 +mj      = 0.14716         mjsw    = 0.19821       
 +tlev    = 1               tlevc   = 1               trs     = 0.0026028       xti     = 3             
 +cta     = 0.0012309       ctp     = 0.0012111       tpb     = 0.0019414       tphp    = 0.0017152     
 +eg      = 1.17
+
 *       
 .model  sc_diode  d  level = 3
 +tref    = 25
-+js      = '8.16*10**jsa_sc'          jsw     = 0               ik      = 4e+010          vb      = '17 + vba_sc'
++js      = '8.16*10**jsa_sc'          jsw     = 0               ik      = 4e+010          bv      = '17 + vba_sc'
 +ibv     = 9.92e-005       ikr     = 4e+008          n       = 1.0553          rs      = '2.768e-009*rs_sc'
 +jtun    = '1048.7*10**jtuna_sc'          jtunsw  = 0               ntun    = 72.211
-+cj      = '0.00176*cja_sc'         cjp     = 0               pb      = 0.14256         php     = 0.93627
++cjo     = '0.00176*cja_sc'         cjp     = 0               pb      = 0.14256         php     = 0.93627
 +mj      = 0.02604         mjsw    = 0.1545
 +tlev    = 1               tlevc   = 1               tcv     = -5e-005         trs     = 0.0022143
 +xti     = 3               xtitun  = -12.347         cta     = 6.2962e-005     ctp     = 0
@@ -38276,6 +38282,7 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 *    rm1                Model for 2-terminal metal 1 resistor
 *    rm2                Model for 2-terminal metal 2 resistor
 *    rm3                Model for 2-terminal metal 3 resistor
+*    rm4                Model for 2-terminal metal 4 resistor
 *    tm6k               Model for 2-terminal top metal 6k resistor
 *    tm9k               Model for 2-terminal top metal 9k resistor
 *    tm30k              Model for 2-terminal top metal 30k resistor
@@ -38312,7 +38319,7 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 + tc2=1.75E-6
 + tnom=25
 * model for substrate capacitor
-.model diode_nd2ps_03v3 d
+.model diode_nd2ps_03v3_r d
 + Level=3
 + Cj=0.00096797    
 + Mj=0.32071       
@@ -38329,12 +38336,12 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 *-------------------
 * terminal 1
 rt1 1 11 nplus_u_t   l='s*1u' w=r_w dtemp=dtemp
-d1  3 1  diode_nd2ps_03v3  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
+d1  3 1  diode_nd2ps_03v3_r  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
 * body
 rb  11 21 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(11,21))/r_n+r_vc2*abs(v(11,21))*abs(v(11,21))/r_n/r_n)*(1+mis_r*sw_stat_mismatch)'
 * terminal 2
 rt2 21 2 nplus_u_t   l='s*1u' w=r_w dtemp=dtemp
-d2  3 2  diode_nd2ps_03v3  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
+d2  3 2  diode_nd2ps_03v3_r  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
 *-------------------
 .ends nplus_u
 *******************************************************************************************************
@@ -38418,7 +38425,7 @@ d2  2 3  diode_pd2nw_03v3  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
 + tc2=-0.27E-6
 + tnom=25
 * model for substrate capacitor
-.model diode_nd2ps_03v3 d
+.model diode_nd2ps_03v3_r d
 + Level=3
 + Cj=0.00096797    
 + Mj=0.32071       
@@ -38435,12 +38442,12 @@ d2  2 3  diode_pd2nw_03v3  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
 *-------------------
 * terminal 1
 rt1 1 11 nplus_s_t   l='s*1u' w=r_w dtemp=dtemp
-d1  3 1  diode_nd2ps_03v3  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
+d1  3 1  diode_nd2ps_03v3_r  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
 * body
 rb  11 21 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(11,21))/r_n+r_vc2*abs(v(11,21))*abs(v(11,21))/r_n/r_n)'
 * terminal 2
 rt2 21 2 nplus_s_t   l='s*1u' w=r_w dtemp=dtemp
-d2  3 2  diode_nd2ps_03v3  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
+d2  3 2  diode_nd2ps_03v3_r  area='r_w*r_l/2' pj='r_w+2*r_l/2' dtemp=dtemp
 *-------------------
 .ends nplus_s
 *******************************************************************************************************
@@ -39038,6 +39045,28 @@ rb 1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2))
 rb 1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2))/r_n/r_n)'
 *-------------------
 .ends rm3
+*******************************************************************************************************
+* model for metal 4 resistor
+.subckt rm4 1 2 r_length=l r_width=w dtemp=0 par=1 s=1
+*-------------------
+* body resistor parameters
++ r_rsh0=rsh_rm4
++ r_dw=0
++ r_dl=0
++ r_vc1=0
++ r_vc2=0
++ r_tc1=3.33E-3
++ r_tc2=0
++ r_tnom=25
++ r_l='s*(r_length-2*r_dl)'
++ r_w='r_width-2*r_dw'
++ r_n='r_l/r_w'
++ r_temp='1+r_tc1*(temper+dtemp-r_tnom)+r_tc2*(temper+dtemp-r_tnom)*(temper+dtemp-r_tnom)'
+*-------------------
+* body
+rb 1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2))/r_n/r_n)'
+*-------------------
+.ends rm4
 ***************************************************************************************
 * model for top metal 6k resistor
 .subckt tm6k 1 2 r_length=l r_width=w dtemp=0 par=1 s=1
@@ -39152,11 +39181,19 @@ rb 1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2))
 + c_vcr2=9.748E-06
 + c_area='c_length*c_width'
 + c_peri='2*(c_length+c_width)'
-+ c_c0='(c_cox*c_area+c_capsw*c_peri)*(1+c_tc1*(temper+dtemp-c_tnom)+c_tc2*(temper+dtemp-c_tnom)*(temper+dtemp-c_tnom))'
-*/
+* + c_c0='(c_cox*c_area+c_capsw*c_peri)*(1+c_tc1*(temper+dtemp-c_tnom)+c_tc2*(temper+dtemp-c_tnom)*(temper+dtemp-c_tnom))'
++ c_c0='(c_cox*c_area+c_capsw*c_peri) * (1+mc_c_cox_1p5fF)'
+
 */ model for capacitance
-c_cap 1 2 c='c_c0*(1+ c_vcr1*v(1, 2)+c_vcr2*v(1,2)*v(1,2) )*(1+mc_c_cox_1p5fF)'
-**
+.MODEL cap_mim_1f5_model C 
++ cap=c_c0 
++ tc1=c_tc1 
++ tc2=c_tc2
++ tnom=c_tnom
+
+* c_cap 1 2 c='c_c0*(1+ c_vcr1*v(1, 2)+c_vcr2*v(1,2)*v(1,2) )*(1+mc_c_cox_1p5fF)'
+c_cap 1 2 cap_mim_1f5_model dtemp=dtemp
+
 .ends cap_mim_1f5
 */ -------------------------------------------------------------------------------------
 */ MIM Capacitor (1fF/um2) subcircuit model for GF's 0.18 Analog CMOS process
@@ -39172,11 +39209,19 @@ c_cap 1 2 c='c_c0*(1+ c_vcr1*v(1, 2)+c_vcr2*v(1,2)*v(1,2) )*(1+mc_c_cox_1p5fF)'
 + c_vcr2=1.268e-6
 + c_area='c_length*c_width'
 + c_peri='2*(c_length+c_width)'
-+ c_c0='(c_cox*c_area+c_capsw*c_peri)*(1+c_tc1*(temper+dtemp-c_tnom)+c_tc2*(temper+dtemp-c_tnom)*(temper+dtemp-c_tnom))'
-*/
+* + c_c0='(c_cox*c_area+c_capsw*c_peri)*(1+c_tc1*(temper+dtemp-c_tnom)+c_tc2*(temper+dtemp-c_tnom)*(temper+dtemp-c_tnom))'
++ c_c0='(c_cox*c_area+c_capsw*c_peri) * (1+mc_c_cox_1p0fF)'
+
 */ model for capacitance
-c_cap 1 2 c='c_c0*(1+ c_vcr1*v(1, 2)+c_vcr2*v(1,2)*v(1,2) )*(1+mc_c_cox_1p0fF)'
-**
+.MODEL cap_mim_1f0_model C 
++ cap=c_c0 
++ tc1=c_tc1 
++ tc2=c_tc2
++ tnom=c_tnom
+
+* c_cap 1 2 c='c_c0*(1+ c_vcr1*v(1, 2)+c_vcr2*v(1,2)*v(1,2) )*(1+mc_c_cox_1p0fF)'
+c_cap 1 2 cap_mim_1f0_model dtemp=dtemp
+
 .ends cap_mim_1f0
 */ -------------------------------------------------------------------------------------
 */ MIM Capacitor (2fF/um2) subcircuit model for GLOBALFOUNDRIES 0.18 Analog CMOS process M2-M3
@@ -39194,10 +39239,20 @@ c_cap 1 2 c='c_c0*(1+ c_vcr1*v(1, 2)+c_vcr2*v(1,2)*v(1,2) )*(1+mc_c_cox_1p0fF)'
 .param c_AREA='c_length*c_width'
 .param c_PERI='2*(c_length+c_width)'
 
-.param c_c0='(c_cox*c_AREA+c_capsw*c_PERI)*(1+c_tc1*(temper +dtemp -c_tnom)+c_tc2*(temper+dtemp-c_tnom)*(temper+dtemp-c_tnom))'
-*
-c_cap 1 2 c='c_c0*(1+c_vcr1*v(1,2)+c_vcr2*v(1,2)*v(1,2))*(1+mc_c_cox_2p0fF)'
+* .param c_c0='(c_cox*c_AREA+c_capsw*c_PERI)*(1+c_tc1*(temper +dtemp -c_tnom)+c_tc2*(temper+dtemp-c_tnom)*(temper+dtemp-c_tnom))'
+.param c_c0='(c_cox*c_area+c_capsw*c_peri) * (1+mc_c_cox_2p0fF)'
+
+*/ model for capacitance
+.MODEL cap_mim_2f0_model C 
++ cap=c_c0 
++ tc1=c_tc1 
++ tc2=c_tc2
++ tnom=c_tnom
+
+* c_cap 1 2 c='c_c0*(1+c_vcr1*v(1,2)+c_vcr2*v(1,2)*v(1,2))*(1+mc_c_cox_2p0fF)'
+c_cap 1 2 cap_mim_2f0_model dtemp=dtemp
 r_leak 1 2 r='1/(gleak*c_AREA)' tc1=c_tc1 tc2=c_tc2 dtemp=dtemp
+
 .ends cap_mim_2f0
 .ENDL cap_mim
 * ----------------------------------------------------------------------------------------------------
@@ -39298,8 +39353,8 @@ c_moscap 1 2 c='cap_pmos_06v0_b_corner*c_length*c_width*(cvar1+cvar2*tanh(cvar3*
 + mis_vth=agauss(0,var_vth,1)
 xr1 d d1 b nplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b nplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b nfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -42951,8 +43006,8 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 
 xr1 d d1 b pplus_u_m1 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m1 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_03v3 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=sa sb=sb sd=sd m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -46634,7 +46689,7 @@ rb  1 2 r='r_temp*r_n*(r_rsh0+r_vc1*abs(v(1,2))/r_n+r_vc2*abs(v(1,2))*abs(v(1,2)
 *.lib nfet_06v0_nvt_t
 .subckt nfet_06v0_nvt d g s b w=1e-5 l=1.8e-6 as=0 ad=0 ps=0 pd=0 nrd=0 nrs=0 par=1 dtemp=0 sa=0 sb=0 nf=1 sd=0 m=1
 
-m0 d g s b nfet_06v0_nvt w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs sa=sa sb=sb nf=nf sd=sd
+m0 d g s b nfet_06v0_nvt w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs sa=sa sb=sb nf=nf sd=sd m=m
 
 .ends nfet_06v0_nvt
 
@@ -46809,8 +46864,8 @@ m0 d g s b nfet_06v0_nvt w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs sa=sa s
 
 xr1 d d1 b pplus_u_m2 wr='w' lr='(d_sab==0) ? 1e-15 : d_sab' 
 xr2 s s1 b pplus_u_m2 wr='w' lr='(s_sab==0) ? 1e-15 : s_sab' 
-m0 d1 g s1 b pfet_06v0 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=0 sb=0 sd=0
-+delvto='mis_vth*sw_stat_mismatch' 
+m0 d1 g s1 b pfet_06v0 w='w' l='l' as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs nf=nf sa=0 sb=0 sd=0 m=m
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch'
 .ends
 
 
@@ -47006,7 +47061,7 @@ rfuse  in out  r='200*(1-pblow) + 900*pblow'
 + mis_vth=agauss(0,var_vth,1)
 
 m0 d g s b nfet_03v3 w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs 
-+delvto='mis_vth*sw_stat_mismatch'  sa=sa sb=sb nf=nf sd=sd
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch' sa=sa sb=sb nf=nf sd=sd m=m
 .ends nfet_03v3
 *------------------------------------------------------------------------
 .subckt pfet_03v3 d g s b w=1e-5 l=2.8e-7
@@ -47031,7 +47086,7 @@ m0 d g s b nfet_03v3 w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs
 + mis_vth=agauss(0,var_vth,1)
 
 m0 d g s b pfet_03v3 w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs 
-+delvto='mis_vth*sw_stat_mismatch'  sa=sa sb=sb nf=nf sd=sd
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch' sa=sa sb=sb nf=nf sd=sd m=m
 .ends pfet_03v3
 *------------------------------------------------------------------------
 .subckt nfet_06v0 d g s b w=1e-5 l=7e-7
@@ -47056,7 +47111,7 @@ m0 d g s b pfet_03v3 w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs
 + mis_vth=agauss(0,var_vth,1)
 
 m0 d g s b nfet_06v0 w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs 
-+delvto='mis_vth*sw_stat_mismatch'  sa=sa sb=sb nf=nf sd=sd
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch' sa=sa sb=sb nf=nf sd=sd m=m
 .ends nfet_06v0
 *------------------------------------------------------------------------
 .subckt pfet_06v0 d g s b w=1e-5 l=5e-7
@@ -47081,7 +47136,7 @@ m0 d g s b nfet_06v0 w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs
 + mis_vth=agauss(0,var_vth,1)
 
 m0 d g s b pfet_06v0 w=w l=l as=as ad=ad ps=ps pd=pd nrd=nrd nrs=nrs 
-+delvto='mis_vth*sw_stat_mismatch'  sa=sa sb=sb nf=nf sd=sd
++delvto='mis_vth*sw_stat_mismatch' mulu0='1-mis_k*sw_stat_mismatch' sa=sa sb=sb nf=nf sd=sd m=m
 .ends pfet_06v0
 *------------------------------------------------------------------------
 
@@ -47299,8 +47354,8 @@ q0 c b e  pnp_10p00x00p42  dtemp=dtemp
 +tref    = 25              	level = 1
 +cjc     = '2.04e-014*cjca*(1 + mc_xcjc_vpnp*sw_stat_global)' 	cje     = '6.88e-015*cjea*(1 + mc_xcje_vpnp*sw_stat_global)' 	cjs     = 0               fc      = 0.5           
 +mjc     = 0.22711         	mje     = 0.14469         	mjs     = 0.5             vjc     = 0.43905       
-+vje     = 0.43905         	vjs     = 0.75            	xcjc    = 1               cbcp    = 0             
-+cbep    = 0               	ccsp    = 0               	itf     = 0.1             ptf     = 0             
++vje     = 0.43905         	vjs     = 0.75            	xcjc    = 1             
++itf     = 0.1             ptf     = 0             
 +tf      = 1e-010          	tr      = 0               	vtf     = 10              xtf     = 1             
 +af      = 1               	kf      = 0             
 +is      = '9e-019*isa*(1 + mc_xis_vpnp*sw_stat_global)*(1 + isa_mis_pnp_10p00x00p42)'    	rb      = '41*rba*(1 + mc_xrb_vpnp*sw_stat_global)'        	re      = '1*rea*(1 + mc_xre_vpnp*sw_stat_global)'         irb     = 0.1           
@@ -47334,8 +47389,7 @@ q0 c b e  pnp_05p00x00p42  dtemp=dtemp
 +cjs = 0                       vjs = 0.75                    	mjs = 0.5                     
 +tf = 1E-10                    xtf = 1                       	vtf = 10                      
 +itf = 0.1                     xcjc = 1                      	fc = 0.5                      
-+tr = 0                        ptf = 0                       	cbcp = 0                      
-+cbep = 0                      ccsp = 0                      
++tr = 0                        ptf = 0                     
 +xtb = 1E-4                    xti = 3                       	eg = 1.17                     
 +tbf1 = 6.1E-3                 tbf2 = -4.235165E-22          	tikf1 = -4.3E-3               
 +cte = 1E-3                    ctc = 2.8626E-3               	tvje = 1.9314E-3              
@@ -47364,8 +47418,7 @@ q0 c b e  pnp_10p00x10p00  dtemp=dtemp
 +cjs = 0                       vjs = 0.75                    	mjs = 0.5                     
 +tf = 1E-10                    xtf = 1                       	vtf = 10                      
 +itf = 0.1                     xcjc = 1                      	fc = 0.5                      
-+tr = 0                        ptf = 0                       	cbcp = 0                      
-+cbep = 0                      ccsp = 0                      
++tr = 0                        ptf = 0                      
 +xtb = 1E-4                    xti = 3                       	eg = 1.17                     
 +tbf1 = 4.26E-3                tbf2 = -1.4E-6                	tikf1 = -4.3E-3               
 +cte = 1E-3                    ctc = 2.8626E-3               	tvje = 1.9314E-3              
@@ -47394,8 +47447,7 @@ q0 c b e  pnp_05p00x05p00  dtemp=dtemp
 +cjs = 0                       vjs = 0.75                    	mjs = 0.5                     
 +tf = 1E-10                    xtf = 1                       	vtf = 10                      
 +itf = 0.1                     xcjc = 1                      	fc = 0.5                      
-+tr = 0                        ptf = 0                       	cbcp = 0                      
-+cbep = 0                      ccsp = 0                      
++tr = 0                        ptf = 0                     
 +xtb = 1E-4                    xti = 3                       	eg = 1.17                     
 +tbf1 = 4.54E-3                tbf2 = -9E-7                  	tikf1 = -4.3E-3               
 +cte = 1E-3                    ctc = 2.8626E-3               	tvje = 1.9314E-3              
