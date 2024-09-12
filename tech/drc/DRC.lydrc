@@ -47,13 +47,15 @@ def dens_check(output, input, min, max)
     tp.execute("Density check")
 end
 
+deep
+
 # Define layers
 Nwell = input(21, 0)
 Nplus = input(32, 0)
 Pplus = input(31, 0)
 Dualgate = input(55, 0)
-COMP = input(22, 0)
 Poly2 = input(30, 0)
+COMP = input(22, 0)
 Metal1_Label = input(34, 10)
 Metal1 = input(34, 0)
 Metal2_Label = input(36, 10)
@@ -87,11 +89,11 @@ Pplus.ongrid(0.005).output(
 Dualgate.ongrid(0.005).output(
     "Dualgate grid", "Dualgate grid: 0.005µm"
 )
-COMP.ongrid(0.005).output(
-    "COMP grid", "COMP grid: 0.005µm"
-)
 Poly2.ongrid(0.005).output(
     "Poly2 grid", "Poly2 grid: 0.005µm"
+)
+COMP.ongrid(0.005).output(
+    "COMP grid", "COMP grid: 0.005µm"
 )
 Metal1_Label.ongrid(0.005).output(
     "Metal1_Label grid", "Metal1_Label grid: 0.005µm"
@@ -152,16 +154,18 @@ V5_XTOR.ongrid(0.005).output(
 )
 
 # Derived layers
-# wafer.remove(Nwell).alias(substrate:GF180MCU)
-substrate__GF180MCU = (extent.sized(0.6)-Nwell)
+# wafer.alias(_wafer)
+_wafer = extent.sized(0.43)
+# _wafer.remove(Nwell).alias(substrate:GF180MCU)
+substrate__GF180MCU = (_wafer-Nwell)
 # COMP.remove(Poly2).alias(COMP__conn)
 COMP__conn = (COMP-Poly2)
 # intersect(COMP__conn,Nplus).alias(COMP__conn:Nplus)
 COMP__conn__Nplus = (COMP__conn&amp;Nplus)
 # intersect(COMP__conn,Pplus).alias(COMP__conn:Pplus)
 COMP__conn__Pplus = (COMP__conn&amp;Pplus)
-# intersect(COMP,Poly2,wafer.remove(Dualgate)).alias(gate:fet33gate)
-gate__fet33gate = (COMP&amp;Poly2&amp;(extent.sized(0.6)-Dualgate))
+# intersect(COMP,Poly2,_wafer.remove(Dualgate)).alias(gate:fet33gate)
+gate__fet33gate = (COMP&amp;Poly2&amp;(_wafer-Dualgate))
 # intersect(COMP,Poly2,Dualgate,V5_XTOR).alias(gate:fet5gate)
 gate__fet5gate = (COMP&amp;Poly2&amp;Dualgate&amp;V5_XTOR)
 # intersect(gate:fet33gate,Nplus).remove(Nwell).alias(gate:mosfet:nfet_03v3)
@@ -174,8 +178,8 @@ gate__mosfet__pfet_03v3 = (gate__fet33gate&amp;Pplus&amp;Nwell)
 gate__mosfet__pfet_05v0 = (gate__fet5gate&amp;Pplus&amp;Nwell)
 
 # Connectivity
-# connect(substrate:GF180MCU,wafer)
-connect(substrate__GF180MCU, extent.sized(0.6))
+# connect(substrate:GF180MCU,_wafer)
+connect(substrate__GF180MCU, _wafer)
 # connect(COMP__conn,COMP__conn:Nplus)
 connect(COMP__conn, COMP__conn__Nplus)
 # connect(COMP__conn:Nplus,Nwell)
@@ -263,6 +267,14 @@ Dualgate.width(0.7).output(
 Dualgate.space(0.44).output(
     "Dualgate space", "Dualgate minimum space: 0.44µm"
 )
+# Poly2.width &gt;= 0.28
+Poly2.width(0.28).output(
+    "Poly2 width", "Poly2 minimum width: 0.28µm"
+)
+# Poly2.space &gt;= 0.24
+Poly2.space(0.24).output(
+    "Poly2 space", "Poly2 minimum space: 0.24µm"
+)
 # COMP.width &gt;= 0.3
 COMP.width(0.3).output(
     "COMP width", "COMP minimum width: 0.3µm"
@@ -287,25 +299,35 @@ Pplus.enclosing(COMP, 0.16).output(
 )
 # intersect(Nplus,Pplus).area == 0
 (Nplus&amp;Pplus).output("(Nplus&amp;Pplus) empty")
-# intersect(COMP,Pplus).enclosed_by(Nwell) &gt;= Enclosure(0.6)
-Nwell.enclosing((COMP&amp;Pplus), 0.6).output(
+# intersect(COMP,Pplus).enclosed_by(Nwell) &gt;= Enclosure(0.43)
+Nwell.enclosing((COMP&amp;Pplus), 0.43).output(
     "Nwell:(COMP&amp;Pplus) enclosure",
-    "Minimum enclosure of Nwell around (COMP&amp;Pplus): 0.6µm"
+    "Minimum enclosure of Nwell around (COMP&amp;Pplus): 0.43µm"
 )
 # intersect(COMP,Nplus).enclosed_by(Nwell) &gt;= Enclosure(0.16)
 Nwell.enclosing((COMP&amp;Nplus), 0.16).output(
     "Nwell:(COMP&amp;Nplus) enclosure",
     "Minimum enclosure of Nwell around (COMP&amp;Nplus): 0.16µm"
 )
-# intersect(COMP,Nplus).enclosed_by(substrate:GF180MCU) &gt;= Enclosure(0.6)
-substrate__GF180MCU.enclosing((COMP&amp;Nplus), 0.6).output(
+# intersect(COMP,Dualgate).enclosed_by(Nwell) &gt;= Enclosure(0.6)
+Nwell.enclosing((COMP&amp;Dualgate), 0.6).output(
+    "Nwell:(COMP&amp;Dualgate) enclosure",
+    "Minimum enclosure of Nwell around (COMP&amp;Dualgate): 0.6µm"
+)
+# intersect(COMP,Nplus).enclosed_by(substrate:GF180MCU) &gt;= Enclosure(0.43)
+substrate__GF180MCU.enclosing((COMP&amp;Nplus), 0.43).output(
     "substrate__GF180MCU:(COMP&amp;Nplus) enclosure",
-    "Minimum enclosure of substrate__GF180MCU around (COMP&amp;Nplus): 0.6µm"
+    "Minimum enclosure of substrate__GF180MCU around (COMP&amp;Nplus): 0.43µm"
 )
 # intersect(COMP,Pplus).enclosed_by(substrate:GF180MCU) &gt;= Enclosure(0.16)
 substrate__GF180MCU.enclosing((COMP&amp;Pplus), 0.16).output(
     "substrate__GF180MCU:(COMP&amp;Pplus) enclosure",
     "Minimum enclosure of substrate__GF180MCU around (COMP&amp;Pplus): 0.16µm"
+)
+# intersect(COMP,Dualgate).enclosed_by(substrate:GF180MCU) &gt;= Enclosure(0.6)
+substrate__GF180MCU.enclosing((COMP&amp;Dualgate), 0.6).output(
+    "substrate__GF180MCU:(COMP&amp;Dualgate) enclosure",
+    "Minimum enclosure of substrate__GF180MCU around (COMP&amp;Dualgate): 0.6µm"
 )
 # COMP.enclosed_by(Dualgate) &gt;= Enclosure(0.24)
 Dualgate.enclosing(COMP, 0.24).output(
@@ -314,14 +336,6 @@ Dualgate.enclosing(COMP, 0.24).output(
 )
 # edge(COMP).interact_with(edge(Nwell)).length == 0
 COMP.edges.interacting(Nwell.edges).output("COMP.edges.interacting(Nwell.edges) empty")
-# Poly2.width &gt;= 0.28
-Poly2.width(0.28).output(
-    "Poly2 width", "Poly2 minimum width: 0.28µm"
-)
-# Poly2.space &gt;= 0.24
-Poly2.space(0.24).output(
-    "Poly2 space", "Poly2 minimum space: 0.24µm"
-)
 # Metal1.width &gt;= 0.23
 Metal1.width(0.23).output(
     "Metal1 width", "Metal1 minimum width: 0.23µm"
@@ -648,10 +662,6 @@ COMP.separation(Poly2, 0.3, square).output(
     "COMP:Poly2 spacing",
     "Minimum spacing between COMP and Poly2: 0.3µm"
 )
-# intersect(COMP,Dualgate).width &gt;= 0.3
-(COMP&amp;Dualgate).width(0.3).output(
-    "(COMP&amp;Dualgate) width", "(COMP&amp;Dualgate) minimum width: 0.3µm"
-)
 # join(intersect(COMP,Dualgate)).space &gt;= 0.36
 ((COMP&amp;Dualgate)).space(0.36).output(
     "((COMP&amp;Dualgate)) space", "((COMP&amp;Dualgate)) minimum space: 0.36µm"
@@ -660,9 +670,8 @@ COMP.separation(Poly2, 0.3, square).output(
 (Poly2&amp;Dualgate).width(0.2).output(
     "(Poly2&amp;Dualgate) width", "(Poly2&amp;Dualgate) minimum width: 0.2µm"
 )
-# space(COMP,Nwell) &gt;= 0.6
-COMP.separation(Nwell, 0.6, square).output(
-    "COMP:Nwell spacing",
-    "Minimum spacing between COMP and Nwell: 0.6µm"
+# intersect(COMP,Dualgate).width &gt;= 0.3
+(COMP&amp;Dualgate).width(0.3).output(
+    "(COMP&amp;Dualgate) width", "(COMP&amp;Dualgate) minimum width: 0.3µm"
 )
 </text></klayout-macro>

@@ -7,6 +7,7 @@ from pdkmaster.design import library as _lbry
 from c4m.flexcell import factory as _stdfab
 
 from .pdkmaster import *
+from .spice import *
 from .pyspice import *
 from .klayout import register_primlib as pya_register_primlib
 
@@ -16,13 +17,14 @@ from .klayout import register_primlib as pya_register_primlib
 
 
 from .pdkmaster import __all__ as _pdkmaster_all
+from .spice import __all__ as _spice_all
 from .pyspice import __all__ as _pyspice_all
 from .stdcell import __all__ as _stdcell_all
 
-stdcell3v3canvas: _stdfab.StdCellCanvas
-StdCell3V3Factory: type
-stdcell3v3lib: _lbry.RoutingGaugeLibrary
-stdcell3v3lib: _lbry.RoutingGaugeLibrary
+stdcellcanvas: _stdfab.StdCellCanvas
+StdCellFactory: type
+stdcelllib: _lbry.RoutingGaugeLibrary
+stdcelllib: _lbry.RoutingGaugeLibrary
 stdcell5v0canvas: _stdfab.StdCellCanvas
 StdCell5V0Factory: type
 stdcell5v0lib: _lbry.RoutingGaugeLibrary
@@ -33,10 +35,10 @@ def __getattr__(name: str) -> Any:
         return getattr(stdcell, name)
     elif name == "libs":
         from .stdcell import (
-            stdcell3v3lib, stdcell5v0lib,
+            stdcelllib, stdcell5v0lib,
         )
         return [
-            stdcell3v3lib, stdcell5v0lib,
+            stdcelllib, stdcell5v0lib,
         ]
     else:
         raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
@@ -46,7 +48,7 @@ def __dir__():
     self = import_module(__name__)
     return sorted((
         *(name for name in self.__dict__.keys() if name.startswith("__")),
-        *_pdkmaster_all, *_pyspice_all,
+        *_pdkmaster_all, *_spice_all, *_pyspice_all,
         "pya_register_primlib",
         *_stdcell_all,
         "libs",

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later OR GPL-2.0-or-later OR CERN-OHL-S-2.0+ OR Apache-2.0
+from pdkmaster.typing import GDSLayerSpecDict
 from pdkmaster.technology import (
     property_ as _prp, primitive as _prm, technology_ as _tch,
 )
@@ -66,10 +67,16 @@ class _GF180MCU(_tch.Technology):
             implant_abut="all",
             allow_contactless_implant=False,
             well=nwell,
-            min_well_enclosure=_prp.Enclosure(0.6), # DF.4c, TODO: 0.43µm for 3.3V
+            min_well_enclosure=_prp.Enclosure(0.43), # DF.4c
+            min_well_enclosure4oxide={
+                dualgate: _prp.Enclosure(0.6), # DF.4c
+            },
             min_well_enclosure_same_type=_prp.Enclosure(0.16), # DF.4d, TODO: 0.12 for 3.3V
             allow_in_substrate=True,
-            min_substrate_enclosure=_prp.Enclosure(0.6), # DF.16, TODO: 0.43 for 3.3V
+            min_substrate_enclosure=_prp.Enclosure(0.43), # DF.16
+            min_substrate_enclosure4oxide={
+                dualgate: _prp.Enclosure(0.6), # DF.16
+            },
             min_substrate_enclosure_same_type=_prp.Enclosure(0.16), # DF.17, TODO: 0.12 for 3.3V
             oxide=dualgate,
             min_oxide_enclosure=_prp.Enclosure(0.24), # DV.6
@@ -77,9 +84,6 @@ class _GF180MCU(_tch.Technology):
         )
         comp5_width = _prm.MinWidth(prim=comp.in_(dualgate), min_width=0.3)
         comp5_space = _prm.Spacing(primitives1=comp.in_(dualgate), min_space=0.36) # DF.3a
-        comp_nwell_space = _prm.Spacing(
-            primitives1=comp, primitives2=nwell, min_space=0.6,
-        )
         poly2 = _prm.GateWire(
             name="Poly2",
             # min_width= 0.18, # PL.1
@@ -189,7 +193,7 @@ class _GF180MCU(_tch.Technology):
 
         super().__init__(primitives=_prm.Primitives((
             base, nwell, nplus, pplus, dualgate, v5_xtor,
-            comp, comp5_width, comp5_space, comp_nwell_space,
+            comp, comp5_width, comp5_space,
             poly2, poly2_width, comp_poly2_space,
             *metal_pins, *metals, *vias,
             fet33gate, nfet_03v3, pfet_03v3,
@@ -199,7 +203,7 @@ class _GF180MCU(_tch.Technology):
 tech = _GF180MCU()
 cktfab = _ckt.CircuitFactory(tech=tech)
 layoutfab = _lay.LayoutFactory(tech=tech)
-gds_layers = {
+gds_layers: GDSLayerSpecDict = {
     "Nwell": (21, 0),
     "Nplus": (32, 0),
     "Pplus": (31, 0),
