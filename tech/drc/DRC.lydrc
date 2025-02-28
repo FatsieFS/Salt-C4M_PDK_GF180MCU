@@ -16,8 +16,8 @@ def space4width_check(layer, w, s)
 end
 
 def space4widthlength_check(layer, w, l, s)
-    big = layer.sized(-0.5*w).size(0.5*w)
-    big.edges.separation(layer.edges, s).with_length(l + 1.dbu, nil)
+    big_edges = layer.sized(-0.5*w).size(0.5*w).edges
+    big_edges.separation(layer.edges, s, Projection).with_length(l + 1.dbu, nil)
 end
 
 def oppenc_check(inner, outer, min, max)
@@ -54,8 +54,8 @@ Nwell = input(21, 0)
 Nplus = input(32, 0)
 Pplus = input(31, 0)
 Dualgate = input(55, 0)
-Poly2 = input(30, 0)
 COMP = input(22, 0)
+Poly2 = input(30, 0)
 Metal1_Label = input(34, 10)
 Metal1 = input(34, 0)
 Metal2_Label = input(36, 10)
@@ -89,11 +89,11 @@ Pplus.ongrid(0.005).output(
 Dualgate.ongrid(0.005).output(
     "Dualgate grid", "Dualgate grid: 0.005µm"
 )
-Poly2.ongrid(0.005).output(
-    "Poly2 grid", "Poly2 grid: 0.005µm"
-)
 COMP.ongrid(0.005).output(
     "COMP grid", "COMP grid: 0.005µm"
+)
+Poly2.ongrid(0.005).output(
+    "Poly2 grid", "Poly2 grid: 0.005µm"
 )
 Metal1_Label.ongrid(0.005).output(
     "Metal1_Label grid", "Metal1_Label grid: 0.005µm"
@@ -267,14 +267,6 @@ Dualgate.width(0.7).output(
 Dualgate.space(0.44).output(
     "Dualgate space", "Dualgate minimum space: 0.44µm"
 )
-# Poly2.width &gt;= 0.28
-Poly2.width(0.28).output(
-    "Poly2 width", "Poly2 minimum width: 0.28µm"
-)
-# Poly2.space &gt;= 0.24
-Poly2.space(0.24).output(
-    "Poly2 space", "Poly2 minimum space: 0.24µm"
-)
 # COMP.width &gt;= 0.3
 COMP.width(0.3).output(
     "COMP width", "COMP minimum width: 0.3µm"
@@ -336,6 +328,14 @@ Dualgate.enclosing(COMP, 0.24).output(
 )
 # edge(COMP).interact_with(edge(Nwell)).length == 0
 COMP.edges.interacting(Nwell.edges).output("COMP.edges.interacting(Nwell.edges) empty")
+# Poly2.width &gt;= 0.28
+Poly2.width(0.28).output(
+    "Poly2 width", "Poly2 minimum width: 0.28µm"
+)
+# Poly2.space &gt;= 0.24
+Poly2.space(0.24).output(
+    "Poly2 space", "Poly2 minimum space: 0.24µm"
+)
 # Metal1.width &gt;= 0.23
 Metal1.width(0.23).output(
     "Metal1 width", "Metal1 minimum width: 0.23µm"
@@ -356,7 +356,7 @@ Metal1_mindens.output(
 )
 # space(Metal1.parts_with(Metal1.width &gt;= 10.0),Metal1) &gt;= 0.3
 space4width_check(Metal1, 10.0, 0.3).output(
-    "Metal1 table spacing",
+    "Metal1 spacetable[10.0]",
     "Minimum Metal1 spacing for 10.0µm width: 0.3µm"
 )
 # Metal2.width &gt;= 0.28
@@ -379,7 +379,7 @@ Metal2_mindens.output(
 )
 # space(Metal2.parts_with(Metal2.width &gt;= 10.0),Metal2) &gt;= 0.3
 space4width_check(Metal2, 10.0, 0.3).output(
-    "Metal2 table spacing",
+    "Metal2 spacetable[10.0]",
     "Minimum Metal2 spacing for 10.0µm width: 0.3µm"
 )
 # Metal3.width &gt;= 0.28
@@ -402,7 +402,7 @@ Metal3_mindens.output(
 )
 # space(Metal3.parts_with(Metal3.width &gt;= 10.0),Metal3) &gt;= 0.3
 space4width_check(Metal3, 10.0, 0.3).output(
-    "Metal3 table spacing",
+    "Metal3 spacetable[10.0]",
     "Minimum Metal3 spacing for 10.0µm width: 0.3µm"
 )
 # Metal4.width &gt;= 0.28
@@ -425,7 +425,7 @@ Metal4_mindens.output(
 )
 # space(Metal4.parts_with(Metal4.width &gt;= 10.0),Metal4) &gt;= 0.3
 space4width_check(Metal4, 10.0, 0.3).output(
-    "Metal4 table spacing",
+    "Metal4 spacetable[10.0]",
     "Minimum Metal4 spacing for 10.0µm width: 0.3µm"
 )
 # Metal5.width &gt;= 0.28
@@ -448,7 +448,7 @@ Metal5_mindens.output(
 )
 # space(Metal5.parts_with(Metal5.width &gt;= 10.0),Metal5) &gt;= 0.3
 space4width_check(Metal5, 10.0, 0.3).output(
-    "Metal5 table spacing",
+    "Metal5 spacetable[10.0]",
     "Minimum Metal5 spacing for 10.0µm width: 0.3µm"
 )
 # MetalTop.width &gt;= 0.44
@@ -471,7 +471,7 @@ MetalTop_mindens.output(
 )
 # space(MetalTop.parts_with(MetalTop.width &gt;= 10.0),MetalTop) &gt;= 0.6
 space4width_check(MetalTop, 10.0, 0.6).output(
-    "MetalTop table spacing",
+    "MetalTop spacetable[10.0]",
     "Minimum MetalTop spacing for 10.0µm width: 0.6µm"
 )
 # Contact.width == 0.22
@@ -662,13 +662,13 @@ COMP.separation(Poly2, 0.3, square).output(
     "COMP:Poly2 spacing",
     "Minimum spacing between COMP and Poly2: 0.3µm"
 )
-# join(intersect(COMP,Dualgate)).space &gt;= 0.36
-((COMP&amp;Dualgate)).space(0.36).output(
-    "((COMP&amp;Dualgate)) space", "((COMP&amp;Dualgate)) minimum space: 0.36µm"
-)
 # intersect(Poly2,Dualgate).width &gt;= 0.2
 (Poly2&amp;Dualgate).width(0.2).output(
     "(Poly2&amp;Dualgate) width", "(Poly2&amp;Dualgate) minimum width: 0.2µm"
+)
+# join(intersect(COMP,Dualgate)).space &gt;= 0.36
+((COMP&amp;Dualgate)).space(0.36).output(
+    "((COMP&amp;Dualgate)) space", "((COMP&amp;Dualgate)) minimum space: 0.36µm"
 )
 # intersect(COMP,Dualgate).width &gt;= 0.3
 (COMP&amp;Dualgate).width(0.3).output(
